@@ -1,0 +1,224 @@
+app:
+  description: クエリと何位まで取るかを指定する
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: YouTube Search API Tool
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables: []
+  environment_variables:
+  - description: ''
+    id: bef188b6-466c-4c50-b5af-ce973694498d
+    name: youtube_api_key
+    selector:
+    - env
+    - youtube_api_key
+    value: AIzaSyAOvdNQWDORzKJmOHXEzllNkhjPOYl8iJY
+    value_type: string
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: code
+      id: 1739064917218-source-1739064934149-target
+      source: '1739064917218'
+      sourceHandle: source
+      target: '1739064934149'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: end
+      id: 1739064934149-source-1739066101051-target
+      source: '1739064934149'
+      sourceHandle: source
+      target: '1739066101051'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 開始
+        type: start
+        variables:
+        - label: input_query
+          max_length: 1000
+          options: []
+          required: true
+          type: paragraph
+          variable: input_query
+        - label: target_rank_range
+          max_length: 48
+          options: []
+          required: true
+          type: number
+          variable: target_rank_range
+      height: 116
+      id: '1739064917218'
+      position:
+        x: 79
+        y: 282
+      positionAbsolute:
+        x: 79
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import requests\nimport json\nimport re\nfrom jinja2 import Environment,\
+          \ BaseLoader\n\ndef parse_iso8601_duration(duration):\n    hours = minutes\
+          \ = seconds = 0\n    match = re.match(r'PT(?:(\\d+)H)?(?:(\\d+)M)?(?:(\\\
+          d+)S)?', duration)\n    if match:\n        hours = int(match.group(1) or\
+          \ 0)\n        minutes = int(match.group(2) or 0)\n        seconds = int(match.group(3)\
+          \ or 0)\n    return hours * 3600 + minutes * 60 + seconds\n\ndef main(query:\
+          \ str, target_rank_range: int, youtube_api_key: str) -> dict:\n    # クレンジング処理（指定された記号を削除）\n\
+          \    query = re.sub(r'[\\\\n{}\":]', '', query)\n    \n    # API キーの設定（自身のAPIキーを設定する）\n\
+          \    api_key = youtube_api_key\n    search_url = \"https://www.googleapis.com/youtube/v3/search\"\
+          \n    videos_url = \"https://www.googleapis.com/youtube/v3/videos\"\n  \
+          \  \n    # 検索パラメータの設定\n    params = {\n        \"part\": \"snippet\",\n\
+          \        \"q\": query,\n        \"maxResults\": target_rank_range,\n   \
+          \     \"type\": \"video\",\n        \"key\": api_key,\n    }\n    \n   \
+          \ # APIへリクエスト送信して結果を取得\n    response = requests.get(search_url, params=params)\n\
+          \    response.raise_for_status()\n    data = response.json()\n    \n   \
+          \ # 取得した検索結果から各動画情報を整形（\"rank\", \"title\", \"link\", \"duration\"）\n  \
+          \  results = []\n    video_ids = []\n    \n    for i, item in enumerate(data.get(\"\
+          items\", []), start=1):\n        video_id = item[\"id\"].get(\"videoId\"\
+          , \"\")\n        if video_id:\n            video_ids.append(video_id)\n\
+          \    \n    # 再生時間の取得\n    if video_ids:\n        video_params = {\n    \
+          \        \"part\": \"contentDetails\",\n            \"id\": \",\".join(video_ids),\n\
+          \            \"key\": api_key,\n        }\n        video_response = requests.get(videos_url,\
+          \ params=video_params)\n        video_response.raise_for_status()\n    \
+          \    video_data = video_response.json()\n        \n        durations = {}\n\
+          \        for item in video_data.get(\"items\", []):\n            vid_id\
+          \ = item[\"id\"]\n            duration_iso = item[\"contentDetails\"][\"\
+          duration\"]\n            duration_seconds = parse_iso8601_duration(duration_iso)\n\
+          \            durations[vid_id] = duration_seconds\n    \n    # 結果をまとめる\n\
+          \    for i, item in enumerate(data.get(\"items\", []), start=1):\n     \
+          \   video_id = item[\"id\"].get(\"videoId\", \"\")\n        video_url =\
+          \ f\"https://www.youtube.com/watch?v={video_id}\"\n        duration_seconds\
+          \ = durations.get(video_id, 0)\n        \n        results.append({\n   \
+          \         \"rank\": i,\n            \"title\": item[\"snippet\"].get(\"\
+          title\", \"\"),\n            \"link\": video_url,\n            \"duration_seconds\"\
+          : duration_seconds,\n        })\n    \n    # Jinja2 環境のセットアップ（カスタムフィルタ my_tojson\
+          \ を登録）\n    env = Environment(loader=BaseLoader())\n    def my_tojson(value):\n\
+          \        return json.dumps(value, ensure_ascii=False, indent=2)\n    env.filters['my_tojson']\
+          \ = my_tojson\n    \n    # Jinja2 テンプレート：results 配列を JSON 形式の文字列として出力\n\
+          \    template_string = \"\"\"{{ results | my_tojson }}\"\"\"\n    template\
+          \ = env.from_string(template_string)\n    output = template.render(results=results)\n\
+          \    \n    # 返り値は dict 型で、\"result\" キーに JSON 文字列を設定\n    return {\"result\"\
+          : output.strip()}\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: true
+        title: コード
+        type: code
+        variables:
+        - value_selector:
+          - '1739064917218'
+          - input_query
+          variable: query
+        - value_selector:
+          - '1739064917218'
+          - target_rank_range
+          variable: target_rank_range
+        - value_selector:
+          - env
+          - youtube_api_key
+          variable: youtube_api_key
+      height: 54
+      id: '1739064934149'
+      position:
+        x: 382
+        y: 282
+      positionAbsolute:
+        x: 382
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1739064934149'
+          - result
+          variable: result
+        selected: false
+        title: 終了
+        type: end
+      height: 90
+      id: '1739066101051'
+      position:
+        x: 684
+        y: 282
+      positionAbsolute:
+        x: 684
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -7.614973250299386
+      y: -150.4190227915591
+      zoom: 0.9547949155021189

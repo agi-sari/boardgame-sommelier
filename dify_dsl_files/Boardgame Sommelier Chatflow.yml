@@ -1,0 +1,890 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: ボドゲソムリエ_チャットフローバージョン2
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.5
+workflow:
+  conversation_variables:
+  - description: プレイ時間
+    id: 39c87461-569f-4cc3-8905-ea0ee27d9f7e
+    name: play_time
+    selector:
+    - conversation
+    - play_time
+    value: ''
+    value_type: string
+  - description: プレイヤー人数
+    id: 7430d52c-395d-42bf-a3c5-777dbc062591
+    name: num_players
+    selector:
+    - conversation
+    - num_players
+    value: ''
+    value_type: string
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: 'こんにちは！ボードゲームソムリエの賽原（サイハラ）です。
+
+      どんなボードゲームをお探しですか？ご自由にご質問ください。'
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+    - おすすめのボードゲームを教えて！
+    - 数学を使った頭を使うボードゲームを教えて！
+    - 可愛い動物が出てくるボードゲームを教えて！
+    - パーティーで盛り上がるボードゲームを教えて！
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      autoPlay: enabled
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1739887953858-true-1739888007130-target
+      selected: false
+      source: '1739887953858'
+      sourceHandle: 'true'
+      target: '1739888007130'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: llm-source-1740061658501-target
+      source: llm
+      sourceHandle: source
+      target: '1740061658501'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: iteration
+      id: 1740061658501-source-1740094115196-target
+      source: '1740061658501'
+      sourceHandle: source
+      target: '1740094115196'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        iteration_id: '1740094115196'
+        sourceType: iteration-start
+        targetType: template-transform
+      id: 1740094115196start-source-1740094130299-target
+      source: 1740094115196start
+      sourceHandle: source
+      target: '1740094130299'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        iteration_id: '1740094115196'
+        sourceType: template-transform
+        targetType: tool
+      id: 1740094130299-source-1740094146851-target
+      source: '1740094130299'
+      sourceHandle: source
+      target: '1740094146851'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        sourceType: iteration
+        targetType: llm
+      id: 1740094115196-source-1739887917572-target
+      source: '1740094115196'
+      sourceHandle: source
+      target: '1739887917572'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: assigner
+      id: 1739887689635-source-1740181834196-target
+      selected: false
+      source: '1739887689635'
+      sourceHandle: source
+      target: '1740181834196'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: assigner
+        targetType: if-else
+      id: 1740181834196-source-1739887953858-target
+      selected: false
+      source: '1740181834196'
+      sourceHandle: source
+      target: '1739887953858'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: question-classifier
+      id: 1739887953858-ada201df-4488-4631-8a4d-c97de09442c9-1740286183567-target
+      selected: false
+      source: '1739887953858'
+      sourceHandle: ada201df-4488-4631-8a4d-c97de09442c9
+      target: '1740286183567'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1740286183567-1-llm-target
+      source: '1740286183567'
+      sourceHandle: '1'
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1740286183567-2-1740284033981-target
+      source: '1740286183567'
+      sourceHandle: '2'
+      target: '1740284033981'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 1740284033981-source-1740302386363-target
+      source: '1740284033981'
+      sourceHandle: source
+      target: '1740302386363'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 1739888007130-source-1740302386363-target
+      source: '1739888007130'
+      sourceHandle: source
+      target: '1740302386363'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 1739887917572-source-1740302386363-target
+      source: '1739887917572'
+      sourceHandle: source
+      target: '1740302386363'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: variable-aggregator
+        targetType: answer
+      id: 1740302386363-source-1740284499657-target
+      source: '1740302386363'
+      sourceHandle: source
+      target: '1740284499657'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: answer
+      id: 1740061658501-fail-branch-1740305969306-target
+      source: '1740061658501'
+      sourceHandle: fail-branch
+      target: '1740305969306'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 開始
+        type: start
+        variables:
+        - label: プレイ人数
+          max_length: 48
+          options:
+          - 1人
+          - 2人
+          - 3人
+          - 4人
+          - 5人以上
+          required: true
+          type: select
+          variable: num_players
+        - label: プレイ時間
+          max_length: 48
+          options:
+          - 〜15分
+          - 〜30分
+          - 〜1時間
+          - 1時間以上
+          required: true
+          type: select
+          variable: play_time
+      height: 116
+      id: '1739887689635'
+      position:
+        x: 945.1889677546427
+        y: 169.2276931575795
+      positionAbsolute:
+        x: 945.1889677546427
+        y: 169.2276931575795
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '## ユーザーの入力
+
+            {{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 20
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.0-pro-exp-02-05
+          provider: google
+        prompt_template:
+        - id: 18029135-98ca-4f7a-84a1-fb277a346352
+          role: system
+          text: "あなたは丁寧で親しみやすい「ボードゲームおすすめアシスタント」のエージェントです。\n優しい簡潔な回答を心がけます。\n\nユーザーの希望のうち、以下の条件は決まっています。\
+            \  \n- プレイ人数：{{#conversation.num_players#}}\n- プレイ時間：{{#conversation.play_time#}}"
+        - id: 78292a41-aac6-4409-aa89-8c1d840c095e
+          role: user
+          text: 'ユーザーの要望に沿って、ボードゲームの名作の中からユーザーがまだ知らなそうな3つのおすすめ作品を選んでください。
+
+
+            ## 回答例
+
+            カタン,クアルト,七不思議
+
+
+            ## 回答例
+
+            テラフォーミングマーズ,立体四目ならべ,オセロ
+
+
+            ## 回答例
+
+            アグリコラ,おばけキャッチ,ito
+
+
+            ## 制約
+
+            絶対にタイトルを以下のカンマ区切り形式で出力してください。
+
+            文脈に関わらず、前置きや補足等は不要です。最小限の回答のみを出力してください。'
+        selected: false
+        title: ゲーム候補出し
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: llm
+      position:
+        x: 1246
+        y: 445
+      positionAbsolute:
+        x: 1246
+        y: 445
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 20
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-1.5-pro-latest
+          provider: google
+        prompt_template:
+        - id: f87dc458-dc9a-4056-9145-911703b9e212
+          role: system
+          text: 'あなたは丁寧で親しみやすい「ボードゲームおすすめアシスタント」のエージェントです。
+
+            優しい簡潔な回答を心がけます。'
+        - id: 61ab42ba-1c0c-41bd-a3c6-3107b86b6580
+          role: user
+          text: 'ここまでに聞き出したユーザーの要望に沿って、以下に示すゲームを、一つずつ紹介してください。必ず以下のポイントを押さえて簡潔に紹介してください。
+
+
+            ## 紹介すべきゲーム（おすすめ順）
+
+            {{#1740061658501.games#}}
+
+
+            ## 各ゲームのYouTube検索結果
+
+            {{#1740094115196.output#}}
+
+
+            ## 紹介する要点の項目
+
+            ・タイトル(## と【】を付けて大見出しとして目立たせる)
+
+            ・どんなゲーム？
+
+            ・ルール説明
+
+            ・面白いポイント！
+
+            ・そのゲームのおすすめ動画（関連さえあれば、なるべく紹介してください。ただし関連する動画が一つも見つからなければこの項目は省略し、丸ごと削除します。「見つかりませんでした」等の説明は要りません。）
+
+
+            ## 注意
+
+            - リンクを示す際はマークダウン形式で[タイトル](URL)という形にして、動画の尺とともに出力してください。
+
+            ### 出力例1
+
+            [カタンの開拓者たちのルール解説](https://www.youtube.com/watch?v=BAWr8J9LBmA)（約10分）
+
+            ### 出力例2
+
+            [テーラフォーミングマーズのルール解説](https://www.youtube.com/watch?v=CDGr8k9LBmO)（約15分）'
+        selected: false
+        title: 説明まとめ
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1739887917572'
+      position:
+        x: 2606
+        y: 445
+      positionAbsolute:
+        x: 2606
+        y: 445
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: '='
+            id: 149a44a5-ab9a-45cb-bf22-c72bcae192b2
+            numberVarType: constant
+            value: '0'
+            varType: number
+            variable_selector:
+            - sys
+            - dialogue_count
+          id: 'true'
+          logical_operator: and
+        - case_id: ada201df-4488-4631-8a4d-c97de09442c9
+          conditions:
+          - comparison_operator: '>'
+            id: b09befea-4866-4663-943e-92cf4c178e52
+            value: '0'
+            varType: number
+            variable_selector:
+            - sys
+            - dialogue_count
+          id: ada201df-4488-4631-8a4d-c97de09442c9
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: IF/ELSE
+        type: if-else
+      height: 174
+      id: '1739887953858'
+      position:
+        x: 1553.1889677546428
+        y: 169.2276931575795
+      positionAbsolute:
+        x: 1553.1889677546428
+        y: 169.2276931575795
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: true
+            size: 20
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-1.5-pro-latest
+          provider: google
+        prompt_template:
+        - id: 1da05e10-0ff2-4e5f-851f-1e7389b85d4f
+          role: system
+          text: "あなたは丁寧で親しみやすい「ボードゲームおすすめアシスタント」のエージェントです。\n優しい簡潔な回答を心がけます。\n\nユーザーの希望のうち、以下の条件は決まっています。\
+            \  \n- プレイ人数：{{#conversation.num_players#}}\n- プレイ時間：{{#conversation.play_time#}}"
+        - id: 865aa877-7a46-4fb8-a571-0c9feeb53634
+          role: user
+          text: "他にも下記のような希望があるかどうか、ユーザーに尋ねてください。（あればでOKです。）\n\n - ボードゲームのジャンル（協力系、対戦系、推理系、戦略系、パーティ系...）\n\
+            \ - 難易度（初心者向け、中級者向け、上級者向け...）\n - テーマ・雰囲気（ファンタジー、SF、どうぶつ...） "
+        selected: false
+        title: ジャンルの質問
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1739888007130'
+      position:
+        x: 2606
+        y: 287
+      positionAbsolute:
+        x: 2606
+        y: 287
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "def main(games: str) -> dict:\n    return {\n        \"games\": games.split(',')\n\
+          \    }\n"
+        code_language: python3
+        desc: ''
+        error_strategy: fail-branch
+        outputs:
+          games:
+            children: null
+            type: array[string]
+        selected: false
+        title: コード
+        type: code
+        variables:
+        - value_selector:
+          - llm
+          - text
+          variable: games
+      height: 90
+      id: '1740061658501'
+      position:
+        x: 1550
+        y: 445
+      positionAbsolute:
+        x: 1550
+        y: 445
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        error_handle_mode: continue-on-error
+        height: 178
+        is_parallel: true
+        iterator_selector:
+        - '1740061658501'
+        - games
+        output_selector:
+        - '1740094146851'
+        - text
+        output_type: array[string]
+        parallel_nums: 10
+        selected: false
+        start_node_id: 1740094115196start
+        title: イテレーション
+        type: iteration
+        width: 692
+      height: 178
+      id: '1740094115196'
+      position:
+        x: 1854
+        y: 445
+      positionAbsolute:
+        x: 1854
+        y: 445
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 692
+      zIndex: 1
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 48
+      id: 1740094115196start
+      parentId: '1740094115196'
+      position:
+        x: 24
+        y: 68
+      positionAbsolute:
+        x: 1878
+        y: 513
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 44
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: true
+        iteration_id: '1740094115196'
+        selected: false
+        template: '{{ arg1 }} ボードゲーム ルール'
+        title: テンプレート 2
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1740094115196'
+          - item
+          variable: arg1
+      height: 54
+      id: '1740094130299'
+      parentId: '1740094115196'
+      position:
+        x: 128
+        y: 68
+      positionAbsolute:
+        x: 1982
+        y: 513
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        desc: ''
+        isInIteration: true
+        iteration_id: '1740094115196'
+        provider_id: 80363afc-77a5-4d73-b685-87027b29f55b
+        provider_name: YouTube Search API Tool
+        provider_type: workflow
+        selected: false
+        title: YouTube Search API Tool
+        tool_configurations: {}
+        tool_label: YouTube Search API Tool
+        tool_name: YouTube_Search
+        tool_parameters:
+          input_query:
+            type: mixed
+            value: '{{#1740094130299.output#}}'
+          target_rank_range:
+            type: constant
+            value: 6
+        type: tool
+      height: 54
+      id: '1740094146851'
+      parentId: '1740094115196'
+      position:
+        x: 432
+        y: 68
+      positionAbsolute:
+        x: 2286
+        y: 513
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        desc: ''
+        items:
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1739887689635'
+          - num_players
+          variable_selector:
+          - conversation
+          - num_players
+          write_mode: over-write
+        - input_type: variable
+          operation: over-write
+          value:
+          - '1739887689635'
+          - play_time
+          variable_selector:
+          - conversation
+          - play_time
+          write_mode: over-write
+        selected: false
+        title: 変数代入
+        type: assigner
+        version: '2'
+      height: 116
+      id: '1740181834196'
+      position:
+        x: 1249.1889677546428
+        y: 169.2276931575795
+      positionAbsolute:
+        x: 1249.1889677546428
+        y: 169.2276931575795
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-1.5-pro-latest
+          provider: google
+        prompt_template:
+        - id: 7d4e19a0-ea26-4ec8-b733-f05376a21c3c
+          role: system
+          text: "あなたは丁寧で親しみやすい「ボードゲームおすすめアシスタント」のエージェントです。\n優しい簡潔な回答を心がけます。\n\nユーザーの希望のうち、以下の条件は決まっています。\
+            \  \n- プレイ人数：{{#conversation.num_players#}}\n- プレイ時間：{{#conversation.play_time#}}"
+        - id: 77fb54ed-34e0-43a7-981a-aa51227d8eec
+          role: user
+          text: ユーザーの質問に優しく簡潔に回答してください。
+        selected: false
+        title: 追加の質問
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1740284033981'
+      position:
+        x: 2606
+        y: 736
+      positionAbsolute:
+        x: 2606
+        y: 736
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1740302386363.output#}}'
+        desc: ''
+        selected: false
+        title: 回答
+        type: answer
+        variables: []
+      height: 103
+      id: '1740284499657'
+      position:
+        x: 3214
+        y: 445
+      positionAbsolute:
+        x: 3214
+        y: 445
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - id: '1'
+          name: 'まだ、おすすめのボードゲームを個別で紹介していない場合、または追加での紹介を求められている場合。
+
+            ※会話の2往復目は基本的にこちら。'
+        - id: '2'
+          name: 例外的に、おすすめのボードゲームは紹介が既に完了しており、それ以外の指示をされた場合。
+        desc: ''
+        instructions: ''
+        memory:
+          query_prompt_template: '{{#sys.query#}}'
+          window:
+            enabled: false
+            size: 50
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-2.0-flash-exp
+          provider: google
+        query_variable_selector:
+        - '1739887689635'
+        - sys.query
+        selected: false
+        title: 質問分類器
+        topics: []
+        type: question-classifier
+        vision:
+          enabled: false
+      height: 256
+      id: '1740286183567'
+      position:
+        x: 942
+        y: 445
+      positionAbsolute:
+        x: 942
+        y: 445
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        output_type: string
+        selected: false
+        title: 変数集約器
+        type: variable-aggregator
+        variables:
+        - - '1740284033981'
+          - text
+        - - '1739888007130'
+          - text
+        - - '1739887917572'
+          - text
+      height: 153
+      id: '1740302386363'
+      position:
+        x: 2910
+        y: 445
+      positionAbsolute:
+        x: 2910
+        y: 445
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: すみません、うまく答えられなかったようです...リセットしてもう一度ご相談ください💦
+        desc: ''
+        selected: false
+        title: エラー回答
+        type: answer
+        variables: []
+      height: 132
+      id: '1740305969306'
+      position:
+        x: 2078
+        y: 663
+      positionAbsolute:
+        x: 2078
+        y: 663
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -457.3532329813297
+      y: 27.991549289316254
+      zoom: 0.5563323332474847
