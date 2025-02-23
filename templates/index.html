@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ボードゲームソムリエの<br>サイハラさん</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>ボードゲームソムリエの<br>サイハラさん</h1>
+        <div class="setup-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="num_players">プレイ人数：<span class="required">*必須</span></label>
+                    <select id="num_players" required>
+                        <option value="">選択してね！</option>
+                        <option value="1人">1人</option>
+                        <option value="2人">2人</option>
+                        <option value="3人">3人</option>
+                        <option value="4人">4人</option>
+                        <option value="5人以上">5人以上</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="play_time">プレイ時間：<span class="required">*必須</span></label>
+                    <select id="play_time" required>
+                        <option value="">選択してね！</option>
+                        <option value="〜15分">〜15分</option>
+                        <option value="〜30分">〜30分</option>
+                        <option value="〜1時間">〜1時間</option>
+                        <option value="1時間以上">1時間以上</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="chat-container">
+            <div class="chat-content">
+                <div class="suggested-questions" id="suggested-questions">
+                    <h3>聞いてみよう🪧</h3>
+                    <div class="question-buttons">
+                        <button class="question-btn">おすすめのボードゲームを教えて！</button>
+                        <button class="question-btn">かわいいどうぶつが出てくるボードゲームは？</button>
+                        <button class="question-btn">パーティーで盛り上がるボードゲームを教えて</button>
+                        <button class="question-btn">数学を使った頭を使うボードゲームを知りたい</button>
+                    </div>
+                </div>
+                <div id="chat-messages">
+                    <div class="message bot-message initial-message">
+                        <div class="message-content">
+                            <img src="{{ url_for('static', filename='images/saihara.png') }}" alt="賽原" class="agent-icon">
+                            <p>こんにちは！ボードゲームソムリエの賽原（サイハラ）です。<br>どんなボードゲームをお探しですか？自由にご質問ください！</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="input-container">
+                <input type="text" id="user-input" placeholder="メッセージを入力...">
+                <button id="send-button">送信</button>
+                <button id="reset-button">リセット</button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html> 

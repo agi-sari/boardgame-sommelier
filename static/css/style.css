@@ -1,0 +1,393 @@
+:root {
+    /* メインカラー */
+    --color-primary: #4a8576;        /* メインの緑色 */
+    --color-primary-dark: #2c5543;   /* 深い緑色 */
+    --color-primary-light: #a8c3b4;  /* 薄い緑色 */
+    
+    /* 背景色 */
+    --color-bg-main: #f0f4f0;        /* メイン背景 */
+    --color-bg-white: #ffffff;       /* 白背景 */
+    --color-bg-message: #f5f9f7;     /* メッセージ背景（薄緑） */
+    --color-bg-user: #e8f3ed;        /* ユーザーメッセージ背景 */
+    --color-bg-subtle: #f8faf9;      /* 微かな背景色 */
+    
+    /* アクセントカラー */
+    --color-accent: #e8a87c;         /* サーモンピンク */
+    --color-accent-dark: #d99b6e;    /* 濃いサーモンピンク */
+    
+    /* エラー・警告色 */
+    --color-error: #c17676;          /* 赤みがかった色 */
+    --color-error-dark: #a86262;     /* 濃い赤色 */
+    
+    /* ボーダー色 */
+    --color-border: #e0eae5;         /* 薄い緑色のボーダー */
+    
+    /* シャドウ */
+    --shadow-color: rgba(44, 85, 67, 0.1);  /* 緑がかった影 */
+    --focus-shadow: rgba(74, 133, 118, 0.2); /* フォーカス時の影 */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    line-height: 1.6;
+    background-color: var(--color-bg-main);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+h1 {
+    text-align: center;
+    color: var(--color-primary-dark);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: 1.3;
+    flex-shrink: 0;
+}
+
+.setup-form {
+    background-color: var(--color-bg-white);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--color-primary-dark);
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--color-primary-light);
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--focus-shadow);
+}
+
+.chat-container {
+    background-color: var(--color-bg-white);
+    border-radius: 10px;
+    box-shadow: 0 2px 5px var(--shadow-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0; /* Flexboxのバグ対策 */
+}
+
+.chat-content {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Flexboxのバグ対策 */
+}
+
+#chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    padding-bottom: 90px;
+    min-height: 0; /* Flexboxのバグ対策 */
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.message p {
+    margin-bottom: 10px;
+}
+
+.message ul, .message ol {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.message li {
+    margin-bottom: 5px;
+}
+
+.message strong {
+    font-weight: bold;
+}
+
+.message em {
+    font-style: italic;
+}
+
+.message code {
+    background-color: #f8f8f8;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+.message pre {
+    background-color: #f8f8f8;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin-bottom: 10px;
+}
+
+.user-message {
+    background-color: var(--color-bg-user);
+    margin-left: 20%;
+}
+
+.bot-message {
+    background-color: var(--color-bg-message);
+    margin-right: 20%;
+}
+
+.input-container {
+    display: flex;
+    padding: 20px;
+    border-top: 1px solid var(--color-border);
+    gap: 10px;
+    background-color: var(--color-bg-white);
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    box-shadow: 0 -2px 5px var(--shadow-color);
+}
+
+#user-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--color-primary-light);
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#user-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--focus-shadow);
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--color-primary);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--color-primary-dark);
+}
+
+#reset-button {
+    background-color: var(--color-error);
+}
+
+#reset-button:hover {
+    background-color: var(--color-error-dark);
+}
+
+.suggested-questions {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-bg-subtle);
+    flex-shrink: 0;
+}
+
+.suggested-questions h3 {
+    margin-bottom: 15px;
+    color: var(--color-primary-dark);
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.question-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.question-btn {
+    background-color: #ff9361; /* より鮮やかなオレンジ色 */
+    font-size: 14px;
+    padding: 10px 20px; /* パディングを少し大きく */
+    white-space: nowrap;
+    flex: 0 1 auto;
+    border-radius: 25px; /* より丸みを持たせる */
+    font-weight: 600; /* 少し太字に */
+    box-shadow: 0 2px 4px rgba(232, 168, 124, 0.3); /* 軽い影を追加 */
+    transition: all 0.3s ease; /* アニメーションをスムーズに */
+}
+
+.question-btn:hover {
+    background-color: #ff7f4d; /* ホバー時はより濃いオレンジ */
+    transform: translateY(-1px); /* ホバー時に少し浮き上がる */
+    box-shadow: 0 4px 8px rgba(232, 168, 124, 0.4); /* ホバー時は影を大きく */
+}
+
+.question-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* セレクトボックスの無効化スタイル */
+select[disabled] {
+    background-color: var(--color-bg-message);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.typing {
+    font-style: italic;
+    color: #666;
+}
+
+.required {
+    color: var(--color-error);
+    margin-left: 2px;
+}
+
+.message-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.agent-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-primary);
+}
+
+.thinking {
+    color: var(--color-primary);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.thinking::after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: thinking-spinner 1s linear infinite;
+}
+
+@keyframes thinking-spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* スマートフォン向けのレスポンシブデザイン */
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .user-message, .bot-message {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .input-container {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        padding: 12px;
+    }
+
+    #user-input {
+        grid-row: 1 / 3;
+        height: 100%;
+    }
+
+    #send-button, #reset-button {
+        padding: 8px 15px;
+        min-width: 60px;
+        height: 36px;
+    }
+
+    .question-buttons {
+        flex-direction: column;
+    }
+
+    .question-btn {
+        width: 100%;
+    }
+}
+
+.limit-message {
+    color: var(--color-error);
+    font-weight: bold;
+} 
