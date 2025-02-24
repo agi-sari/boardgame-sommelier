@@ -1,4 +1,4 @@
-# ボードゲームソムリエ
+# ボードゲームソムリエのサイハラさん
 
 ボードゲームソムリエの賽原（サイハラ）さんは、あなたのボードゲーム選びをサポートするチャットボットアプリケーションです。プレイ人数とプレイ時間に基づいて、最適なボードゲームを提案します。
 
@@ -44,7 +44,7 @@ https://boardgame-sommelier.com
 
 1. リポジトリのクローン：
    ```bash
-   git clone [リポジトリURL]
+   git clone https://github.com/agi-sari/boardgame-sommelier.git
    cd boardgame-sommelier
    ```
 
@@ -139,50 +139,8 @@ https://boardgame-sommelier.com
 4. お名前.comでのDNSレコード設定：
    - お名前.comの管理画面にログイン
    - 「DNSレコード設定」を選択
-   - 以下のレコードを追加：
-     ```
-     # IPv4の設定（必須）
-     TYPE: A
-     NAME: @
-     VALUE: 216.239.32.21
-     TTL: 3600
-
-     TYPE: A
-     NAME: @
-     VALUE: 216.239.34.21
-     TTL: 3600
-
-     TYPE: A
-     NAME: @
-     VALUE: 216.239.36.21
-     TTL: 3600
-
-     TYPE: A
-     NAME: @
-     VALUE: 216.239.38.21
-     TTL: 3600
-
-     # IPv6の設定（推奨）
-     TYPE: AAAA
-     NAME: @
-     VALUE: 2001:4860:4802:32::15
-     TTL: 3600
-
-     TYPE: AAAA
-     NAME: @
-     VALUE: 2001:4860:4802:34::15
-     TTL: 3600
-
-     TYPE: AAAA
-     NAME: @
-     VALUE: 2001:4860:4802:36::15
-     TTL: 3600
-
-     TYPE: AAAA
-     NAME: @
-     VALUE: 2001:4860:4802:38::15
-     TTL: 3600
-     ```
+   - A、AAAA等のレコードを設定
+      - 設定後、反映に数分かかります
 
 5. DNSとSSL証明書の設定確認：
    ```bash
@@ -206,56 +164,12 @@ https://boardgame-sommelier.com
 
    すべての設定が完了すると、ブラウザで`https://[YOUR_DOMAIN]`にアクセスできるようになります。
 
-## トラブルシューティング
-
-### デプロイ関連
-
-- **Q: デプロイ時にプラットフォームエラーが発生する**
-  - A: Dockerfileに`--platform=linux/amd64`を指定し、BuildXを使用してビルド
-  ```bash
-  docker buildx build --platform linux/amd64 -t gcr.io/[PROJECT_ID]/[SERVICE_NAME] .
-  ```
-
-- **Q: 環境変数が反映されない**
-  - A: Cloud Run管理画面で環境変数が正しく設定されているか確認
-
-- **Q: ドメインマッピングが既に存在するエラー**
-  - A: 既存のマッピングを削除してから再作成
-  ```bash
-  gcloud beta run domain-mappings delete --domain [YOUR_DOMAIN]
-  ```
-
-- **Q: SSL証明書の発行に時間がかかる**
-  - A: DNSレコードが正しく設定されているか確認
-  - A: TTLが3600になっているか確認
-  - A: 全てのAレコードとAAAAレコードが設定されているか確認
-
-### アプリケーション関連
-
-- **Q: ローカルでアプリケーションが起動しない**
-  - A: Poetry環境が正しく構築されているか確認
-  ```bash
-  poetry env info
-  poetry install --verbose
-  ```
-
-- **Q: APIリクエストがタイムアウトする**
-  - A: 環境変数`DIFY_API_BASE_URL`が正しく設定されているか確認
-  - A: ネットワーク接続を確認
-
 ## ライセンス
 
 MIT License
 
 ## 作者
-
-[あなたの名前]
-
-## 謝辞
-
-- Dify.AI - チャットエンジンの提供
-- marked.js - マークダウンパーサー
-- Google Cloud Platform - ホスティング環境の提供
+アギ：https://zenn.dev/ghillie
 
 ## 環境変数
 
@@ -276,7 +190,7 @@ MIT License
 
 ## Dify DSLファイルの活用
 
-プロジェクトには、Dify用のDSLファイルが含まれています。これらのファイルを使用して、ボードゲームソムリエのチャットフローとYouTubeのスクレイピングを実現します。
+dify_dsl_filesには、Dify用のDSLファイルが含まれています。これらのファイルを使用して、ボードゲームソムリエのチャットフローとYouTubeのスクレイピング用Difyアプリを作成できます。
 
 ### 含まれるDSLファイル
 
@@ -287,12 +201,13 @@ MIT License
 2. **YouTube Search API Tool.yml**
    - YouTubeのスクレイピングを行うためのDSLファイルです。
    - YouTube APIを利用して、特定のキーワードに基づく動画検索を行います。
+      - DIfyの環境変数にYouTube APIキーを設定してください。
 
 ### DSLファイルの使用方法
 
 1. Difyプラットフォームにログインし、ワークフローのインポート機能を使用して、上記のDSLファイルをインポートします。
-2. インポート後、ワークフローを適用し、必要に応じて設定を調整します。
-3. ボードゲームソムリエのチャットフローは、アプリケーションのバックエンドとして機能し、ユーザーの入力に基づいてボードゲームを推薦します。
-4. YouTubeのスクレイピングワークフローは、特定のキーワードに基づく動画情報を取得し、アプリケーションで活用します。
+2. アプリを公開します。
+3. 作成したアプリのAPIリファレンスにアクセスし、APIキーを取得します。
+4. APIキーを本プロジェクトの環境変数に設定します。
 
 これらのDSLファイルを活用することで、アプリケーションの機能を拡張し、より多様な情報を提供することが可能になります。
