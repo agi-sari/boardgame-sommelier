@@ -217,10 +217,6 @@ h2 {
     margin-left: 20%;
 }
 
-.user-message .message-content {
-    text-align: right;
-}
-
 .bot-message {
     background-color: var(--color-bg-message);
     margin-right: 20%;
