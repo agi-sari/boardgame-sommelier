@@ -37,6 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderer = new marked.Renderer();
     marked.use({ renderer });
 
+    function convertYouTubeLinks(text) {
+        // YouTubeのURLを検出する正規表現
+        const youtubeRegex = /https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)(?:&\S*)?|https?:\/\/(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]+)/g;
+        
+        return text.replace(youtubeRegex, (match, v1, v2) => {
+            const videoId = v1 || v2;
+            return `<div class="youtube-embed"><iframe src="https://www.youtube.com/embed/${videoId}?rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>`;
+        });
+    }
+
     function addMessage(message, isUser = false) {
         console.log('Adding message:', { isUser, messageLength: message.length });
         const messageDiv = document.createElement('div');
@@ -81,7 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Updating message:', { contentLength: content.length });
         const messageContent = messageDiv.querySelector('.message-content div:last-child');
         if (messageContent) {
-            messageContent.innerHTML = marked.parse(content);
+            // YouTube URLをiframeに変換してからマークダウンをパース
+            const processedContent = convertYouTubeLinks(content);
+            messageContent.innerHTML = marked.parse(processedContent);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
     }
