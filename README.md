@@ -81,9 +81,16 @@ https://boardgame-sommelier.com
    # 認証の設定
    gcloud auth login
    gcloud config set project [YOUR_PROJECT_ID]
+   gcloud auth configure-docker
    ```
 
 2. 環境変数の設定：
+   ```bash
+   cp .env.example .env
+   ```
+   `.env`ファイルを編集して、必要な環境変数を設定：
+   - `DIFY_API_KEY`：Dify APIキー
+   - `DIFY_API_BASE_URL`：Dify APIのベースURL
    - `GCP_PROJECT_ID`：Google Cloudプロジェクトのid
    - `GCP_REGION`：デプロイするリージョン（デフォルト: asia-northeast1）
    - `SERVICE_NAME`：Cloud Runのサービス名
@@ -97,52 +104,20 @@ https://boardgame-sommelier.com
    open -a Docker
    ```
 
-### ビルドとデプロイ
+### デプロイの実行
 
-#### M1/M2 Mac（Apple Silicon）での注意点
-M1/M2 Macでは、デフォルトでARM64アーキテクチャのイメージがビルドされますが、Cloud Runは現在AMD64アーキテクチャのみをサポートしています。以下の手順で正しくビルドとデプロイを行います：
-
-1. Docker BuildxのセットアップとAMD64用ビルド：
-   ```bash
-   # Buildxビルダーの作成
-   docker buildx create --use
-
-   # AMD64アーキテクチャ用のイメージをビルドしてプッシュ
-   docker buildx build --platform linux/amd64 -t gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME} . --push
-   ```
-
-2. Cloud Runへのデプロイ：
-   ```bash
-   gcloud run deploy ${SERVICE_NAME} \
-     --image gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME} \
-     --platform managed \
-     --region ${GCP_REGION} \
-     --project ${GCP_PROJECT_ID} \
-     --allow-unauthenticated \
-     --set-env-vars="DIFY_API_KEY=${DIFY_API_KEY},DIFY_API_BASE_URL=${DIFY_API_BASE_URL}"
-   ```
-
-#### Intel Macまたはその他のAMD64システムでの手順
-通常のDockerビルドとデプロイが可能です：
+デプロイは以下のコマンド1つで実行できます：
 
 ```bash
-# イメージのビルド
-docker build -t gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME} .
-
-# イメージのプッシュ
-docker push gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME}
-
-# Cloud Runへのデプロイ
-gcloud run deploy ${SERVICE_NAME} \
-  --image gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME} \
-  --platform managed \
-  --region ${GCP_REGION} \
-  --project ${GCP_PROJECT_ID} \
-  --allow-unauthenticated \
-  --set-env-vars="DIFY_API_KEY=${DIFY_API_KEY},DIFY_API_BASE_URL=${DIFY_API_BASE_URL}"
+./deploy.sh
 ```
 
-### デプロイの確認
+このスクリプトは以下の処理を自動的に行います：
+1. 環境変数の検証
+2. Docker Buildxのセットアップ（M1/M2 Mac対応）
+3. マルチプラットフォーム対応のDockerイメージのビルドとプッシュ
+4. Cloud Runへのデプロイ
+
 デプロイが完了すると、以下のようなURLが表示されます：
 ```
 Service URL: https://${SERVICE_NAME}-xxxxx-xx.${REGION}.run.app
@@ -150,41 +125,12 @@ Service URL: https://${SERVICE_NAME}-xxxxx-xx.${REGION}.run.app
 
 ### トラブルシューティング
 
-#### ビルド関連
-1. **アーキテクチャの問題**
-   エラーメッセージ：
-   ```
-   ERROR: Cloud Run does not support image: Container manifest type must support amd64/linux
-   ```
-   解決策：上記のM1/M2 Mac用の手順を使用してAMD64アーキテクチャ用にビルドしてください。
-
-2. **イメージのプッシュ失敗**
+#### デプロイに失敗する場合
+1. Docker Desktopが起動していることを確認
+2. 環境変数が正しく設定されていることを確認
+3. 以下のコマンドでキャッシュをクリアしてから再試行：
    ```bash
-   # 認証の再実行
-   gcloud auth configure-docker
-   
-   # キャッシュのクリア
-   docker builder prune
-   ```
-
-3. **ビルドキャッシュの問題**
-   ```bash
-   # ビルドキャッシュのクリア
    docker buildx prune
-   ```
-
-#### デプロイ関連
-1. **環境変数の問題**
-   - Cloud Run管理画面で環境変数が正しく設定されているか確認
-   - 必要に応じて手動で環境変数を更新
-
-2. **リソースの制限**
-   - メモリ制限に達する場合は、Cloud Run管理画面でリソース設定を調整
-
-3. **ログの確認**
-   ```bash
-   # Cloud Runのログを確認
-   gcloud run services logs read ${SERVICE_NAME}
    ```
 
 ### 独自ドメインの設定（お名前.com使用）
