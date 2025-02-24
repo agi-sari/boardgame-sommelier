@@ -16,7 +16,7 @@ workflow:
     selector:
     - env
     - youtube_api_key
-    value: AIzaSyAOvdNQWDORzKJmOHXEzllNkhjPOYl8iJY
+    value: {YOUR_YOUTUBE_API_KEY} # 自分のYouTube APIキーを設定
     value_type: string
   features:
     file_upload:
