@@ -1,32 +1,39 @@
+/* Variables */
 :root {
-    /* メインカラー */
-    --color-primary: #4a8576;        /* メインの緑色 */
-    --color-primary-dark: #2c5543;   /* 深い緑色 */
-    --color-primary-light: #a8c3b4;  /* 薄い緑色 */
-    
-    /* 背景色 */
-    --color-bg-main: #f0f4f0;        /* メイン背景 */
-    --color-bg-white: #ffffff;       /* 白背景 */
-    --color-bg-message: #f5f9f7;     /* メッセージ背景（薄緑） */
-    --color-bg-user: #e8f3ed;        /* ユーザーメッセージ背景 */
-    --color-bg-subtle: #f8faf9;      /* 微かな背景色 */
-    
-    /* アクセントカラー */
-    --color-accent: #e8a87c;         /* サーモンピンク */
-    --color-accent-dark: #d99b6e;    /* 濃いサーモンピンク */
-    
-    /* エラー・警告色 */
-    --color-error: #c17676;          /* 赤みがかった色 */
-    --color-error-dark: #a86262;     /* 濃い赤色 */
-    
-    /* ボーダー色 */
-    --color-border: #e0eae5;         /* 薄い緑色のボーダー */
-    
-    /* シャドウ */
-    --shadow-color: rgba(44, 85, 67, 0.1);  /* 緑がかった影 */
-    --focus-shadow: rgba(74, 133, 118, 0.2); /* フォーカス時の影 */
+    /* Colors */
+    --color-primary: #4a8576;
+    --color-primary-dark: #2c5543;
+    --color-primary-light: #a8c3b4;
+    --color-accent: #ff9361;
+    --color-accent-dark: #ff7f4d;
+    --color-error: #c17676;
+    --color-error-dark: #a86262;
+
+    /* Background Colors */
+    --color-bg-main: #f0f4f0;
+    --color-bg-white: #ffffff;
+    --color-bg-message: #f5f9f7;
+    --color-bg-user: #e8f3ed;
+    --color-bg-subtle: #f8faf9;
+
+    /* Border & Shadow */
+    --color-border: #e0eae5;
+    --shadow-color: rgba(44, 85, 67, 0.1);
+    --focus-shadow: rgba(74, 133, 118, 0.2);
+
+    /* Spacing */
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 20px;
+
+    /* Border Radius */
+    --radius-sm: 5px;
+    --radius-md: 10px;
+    --radius-lg: 25px;
 }
 
+/* Base Styles */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -41,40 +48,40 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
+    font-size: 15px;
 }
 
+/* Layout */
 .container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: var(--spacing-lg);
     width: 100%;
     display: flex;
     flex-direction: column;
     flex: 1;
 }
 
+/* Header */
 h1 {
     text-align: center;
     color: var(--color-primary-dark);
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin: var(--spacing-sm) 0;
     line-height: 1.3;
-    flex-shrink: 0;
 }
 
+/* Setup Form */
 .setup-form {
     background-color: var(--color-bg-white);
-    padding: 20px;
-    border-radius: 10px;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
     box-shadow: 0 2px 5px var(--shadow-color);
-    margin-bottom: 20px;
-    flex-shrink: 0;
+    margin-bottom: var(--spacing-lg);
 }
 
 .form-row {
     display: flex;
-    gap: 20px;
-    justify-content: space-between;
+    gap: var(--spacing-lg);
 }
 
 .form-group {
@@ -83,33 +90,19 @@ h1 {
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: var(--spacing-xs);
     color: var(--color-primary-dark);
 }
 
-select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid var(--color-primary-light);
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-select:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 2px var(--focus-shadow);
-}
-
+/* Chat Container */
 .chat-container {
     background-color: var(--color-bg-white);
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     box-shadow: 0 2px 5px var(--shadow-color);
-    overflow: hidden;
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-height: 0; /* Flexboxのバグ対策 */
+    overflow: hidden;
 }
 
 .chat-content {
@@ -117,34 +110,58 @@ select:focus {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 0; /* Flexboxのバグ対策 */
 }
 
 #chat-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 20px;
+    padding: var(--spacing-lg);
     padding-bottom: 90px;
-    min-height: 0; /* Flexboxのバグ対策 */
 }
 
+/* Agent Header */
+.agent-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.agent-name {
+    color: var(--color-primary-dark);
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+/* Messages */
 .message {
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 5px;
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 1em;
 }
 
+.message-content {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    flex-direction: column;
+}
+
+/* Message Content Elements */
 .message p {
-    margin-bottom: 10px;
+    margin: var(--spacing-xs) 0;
 }
 
-.message ul, .message ol {
-    margin-left: 20px;
-    margin-bottom: 10px;
+.message ul,
+.message ol {
+    margin: var(--spacing-sm) 0;
+    padding-left: var(--spacing-lg);
+    width: 100%;
 }
 
 .message li {
-    margin-bottom: 5px;
+    margin-bottom: var(--spacing-xs);
 }
 
 .message strong {
@@ -156,18 +173,19 @@ select:focus {
 }
 
 .message code {
-    background-color: #f8f8f8;
+    background-color: var(--color-bg-subtle);
     padding: 2px 4px;
-    border-radius: 3px;
+    border-radius: var(--radius-sm);
     font-family: monospace;
 }
 
 .message pre {
-    background-color: #f8f8f8;
-    padding: 10px;
-    border-radius: 5px;
+    background-color: var(--color-bg-subtle);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
     overflow-x: auto;
-    margin-bottom: 10px;
+    margin: var(--spacing-sm) 0;
+    width: 100%;
 }
 
 .user-message {
@@ -175,43 +193,52 @@ select:focus {
     margin-left: 20%;
 }
 
+.user-message .message-content {
+    text-align: right;
+}
+
 .bot-message {
     background-color: var(--color-bg-message);
     margin-right: 20%;
 }
 
+/* Form Elements */
+select, #user-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--color-primary-light);
+    border-radius: var(--radius-sm);
+    font-size: 1em;
+}
+
+select:focus, #user-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--focus-shadow);
+}
+
+/* Input Container */
 .input-container {
-    display: flex;
-    padding: 20px;
+    padding: var(--spacing-lg);
     border-top: 1px solid var(--color-border);
-    gap: 10px;
+    display: flex;
+    gap: var(--spacing-sm);
     background-color: var(--color-bg-white);
     position: sticky;
     bottom: 0;
-    left: 0;
-    right: 0;
     z-index: 10;
     box-shadow: 0 -2px 5px var(--shadow-color);
 }
 
 #user-input {
     flex-grow: 1;
-    padding: 10px;
-    border: 1px solid var(--color-primary-light);
-    border-radius: 5px;
-    font-size: 16px;
 }
 
-#user-input:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 2px var(--focus-shadow);
-}
-
+/* Buttons */
 button {
-    padding: 10px 20px;
+    padding: var(--spacing-sm) var(--spacing-lg);
     border: none;
-    border-radius: 5px;
+    border-radius: var(--radius-sm);
     background-color: var(--color-primary);
     color: white;
     cursor: pointer;
@@ -230,15 +257,15 @@ button:hover {
     background-color: var(--color-error-dark);
 }
 
+/* Question Buttons */
 .suggested-questions {
-    padding: 15px 20px;
+    padding: var(--spacing-md) var(--spacing-lg);
     border-bottom: 1px solid var(--color-border);
     background-color: var(--color-bg-subtle);
-    flex-shrink: 0;
 }
 
 .suggested-questions h3 {
-    margin-bottom: 15px;
+    margin-bottom: var(--spacing-md);
     color: var(--color-primary-dark);
     text-align: center;
     font-size: 1.2em;
@@ -247,69 +274,29 @@ button:hover {
 .question-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: var(--spacing-sm);
     justify-content: center;
 }
 
 .question-btn {
-    background-color: #ff9361; /* より鮮やかなオレンジ色 */
-    font-size: 14px;
-    padding: 10px 20px; /* パディングを少し大きく */
+    background-color: var(--color-accent);
+    font-size: 0.95em;
+    padding: var(--spacing-sm) var(--spacing-lg);
     white-space: nowrap;
     flex: 0 1 auto;
-    border-radius: 25px; /* より丸みを持たせる */
-    font-weight: 600; /* 少し太字に */
-    box-shadow: 0 2px 4px rgba(232, 168, 124, 0.3); /* 軽い影を追加 */
-    transition: all 0.3s ease; /* アニメーションをスムーズに */
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(232, 168, 124, 0.3);
+    transition: all 0.3s ease;
 }
 
 .question-btn:hover {
-    background-color: #ff7f4d; /* ホバー時はより濃いオレンジ */
-    transform: translateY(-1px); /* ホバー時に少し浮き上がる */
-    box-shadow: 0 4px 8px rgba(232, 168, 124, 0.4); /* ホバー時は影を大きく */
+    background-color: var(--color-accent-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(232, 168, 124, 0.4);
 }
 
-.question-btn:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-input:disabled {
-    background-color: #f5f5f5;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-/* セレクトボックスの無効化スタイル */
-select[disabled] {
-    background-color: var(--color-bg-message);
-    cursor: not-allowed;
-    opacity: 0.7;
-}
-
-.typing {
-    font-style: italic;
-    color: #666;
-}
-
-.required {
-    color: var(--color-error);
-    margin-left: 2px;
-}
-
-.message-content {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-}
-
+/* Agent Icon */
 .agent-icon {
     width: 50px;
     height: 50px;
@@ -318,12 +305,13 @@ select[disabled] {
     border: 3px solid var(--color-primary);
 }
 
+/* Thinking Animation */
 .thinking {
     color: var(--color-primary);
     font-style: italic;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--spacing-sm);
 }
 
 .thinking::after {
@@ -343,37 +331,59 @@ select[disabled] {
     }
 }
 
-/* スマートフォン向けのレスポンシブデザイン */
+/* Utilities */
+.required {
+    color: var(--color-error);
+    margin-left: 2px;
+}
+
+.limit-message {
+    color: var(--color-error);
+    font-weight: bold;
+}
+
+/* Disabled States */
+button:disabled,
+input:disabled,
+select:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Responsive */
 @media screen and (max-width: 480px) {
     .container {
-        padding: 10px;
+        padding: var(--spacing-sm);
     }
 
     .form-row {
         flex-direction: column;
-        gap: 10px;
+        gap: var(--spacing-sm);
     }
 
-    .user-message, .bot-message {
+    .user-message,
+    .bot-message {
         margin-left: 0;
         margin-right: 0;
+        margin-bottom: var(--spacing-lg);
         width: 100%;
     }
 
     .input-container {
         display: grid;
         grid-template-columns: 1fr auto;
-        gap: 8px;
-        padding: 12px;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm);
     }
 
     #user-input {
         grid-row: 1 / 3;
-        height: 100%;
     }
 
-    #send-button, #reset-button {
-        padding: 8px 15px;
+    #send-button,
+    #reset-button {
+        padding: 8px var(--spacing-md);
         min-width: 60px;
         height: 36px;
     }
@@ -385,9 +395,8 @@ select[disabled] {
     .question-btn {
         width: 100%;
     }
-}
 
-.limit-message {
-    color: var(--color-error);
-    font-weight: bold;
+    h1 {
+        font-size: 1.5em;
+    }
 } 

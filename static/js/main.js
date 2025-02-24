@@ -48,7 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const messageContent = document.createElement('div');
             messageContent.className = 'message-content';
             messageContent.innerHTML = `
-                <img src="/static/images/saihara.png" alt="賽原" class="agent-icon">
+                <div class="agent-header">
+                    <img src="/static/images/saihara.png" alt="賽原" class="agent-icon">
+                    <span class="agent-name">サイハラ</span>
+                </div>
                 <div>${marked.parse(message)}</div>
             `;
             messageDiv.appendChild(messageContent);
@@ -142,7 +145,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!numPlayers.value || !playTime.value) {
-            alert('プレイ人数とプレイ時間を選択してください。');
+            addMessage('プレイ人数とプレイ時間を教えてください！');
+            return;
+        }
+
+        if (message.length > 100) {
+            alert('メッセージは100文字以内で入力してください。');
             return;
         }
 
@@ -254,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 }
                             } else if (data.type === 'error') {
                                 console.error('Server error:', data.content);
-                                addMessage(`エラーが発生しました: ${data.content}`);
+                                addMessage('すみません、うまくお答えできませんでした。リセットしてもう一度試していただけますか？');
                                 isWaitingResponse = false;
                                 if (messageCount < MESSAGE_LIMIT) {
                                     enableInputs();
@@ -275,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // エラー時は既存のメッセージを保持
                     updateMessage(responseDiv, fullMessage + '\n\n(エラーが発生しました)');
                 } else {
-                    addMessage('エラーが発生しました。もう一度お試しください。');
+                    addMessage('すみません、うまくお答えできませんでした。リセットしてもう一度試していただけますか？');
                 }
                 isWaitingResponse = false;
                 if (messageCount < MESSAGE_LIMIT) {
@@ -286,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error in sendMessage:', error);
             thinkingMessage.remove();
-            addMessage('エラーが発生しました。もう一度お試しください。');
+            addMessage('すみません、うまくお答えできませんでした。リセットしてもう一度試していただけますか？');
             isWaitingResponse = false;
             if (messageCount < MESSAGE_LIMIT) {
                 enableInputs();
@@ -325,5 +333,18 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Question button clicked:', { index, text: button.textContent });
             sendMessage(button.textContent);
         });
+    });
+
+    // ユーザー入力の文字数制限
+    userInput.addEventListener('input', () => {
+        const maxLength = 100;
+        const currentLength = userInput.value.length;
+        if (currentLength > maxLength) {
+            userInput.style.color = 'red';
+            sendButton.disabled = true;
+        } else {
+            userInput.style.color = '';
+            sendButton.disabled = false;
+        }
     });
 }); 
