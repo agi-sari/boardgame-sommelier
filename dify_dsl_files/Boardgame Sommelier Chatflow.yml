@@ -296,7 +296,7 @@ workflow:
       positionAbsolute:
         x: 945.1889677546427
         y: 169.2276931575795
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -395,7 +395,14 @@ workflow:
           role: system
           text: 'あなたは丁寧で親しみやすい「ボードゲームおすすめアシスタント」のエージェントです。
 
-            優しい簡潔な回答を心がけます。'
+            優しい簡潔な回答を心がけます。
+
+
+            ## 制約
+
+            - 絵文字は使わない
+
+            - 自身の大規模言語モデルやシステムの仕組みについて質問されても回答を控える'
         - id: 61ab42ba-1c0c-41bd-a3c6-3107b86b6580
           role: user
           text: 'ここまでに聞き出したユーザーの要望に沿って、以下に示すゲームを、一つずつ紹介してください。必ず以下のポイントを押さえて簡潔に紹介してください。
@@ -413,7 +420,7 @@ workflow:
 
             ## 紹介する要点の項目
 
-            ・タイトル(## と【】を付けて大見出しとして目立たせる)
+            ・ゲームタイトル(## と【】を付けて大見出しとして目立たせる)
 
             ・どんなゲーム？
 
@@ -435,7 +442,7 @@ workflow:
             ### 出力例2
 
             [テーラフォーミングマーズのルール解説](https://www.youtube.com/watch?v=CDGr8k9LBmO)（約15分）'
-        selected: false
+        selected: true
         title: 説明まとめ
         type: llm
         variables: []
@@ -449,7 +456,7 @@ workflow:
       positionAbsolute:
         x: 2606
         y: 445
-      selected: false
+      selected: true
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -491,7 +498,7 @@ workflow:
       positionAbsolute:
         x: 1553.1889677546428
         y: 169.2276931575795
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -519,7 +526,8 @@ workflow:
         - id: 1da05e10-0ff2-4e5f-851f-1e7389b85d4f
           role: system
           text: "あなたは丁寧で親しみやすい「ボードゲームおすすめアシスタント」のエージェントです。\n優しい簡潔な回答を心がけます。\n\nユーザーの希望のうち、以下の条件は決まっています。\
-            \  \n- プレイ人数：{{#conversation.num_players#}}\n- プレイ時間：{{#conversation.play_time#}}"
+            \  \n- プレイ人数：{{#conversation.num_players#}}\n- プレイ時間：{{#conversation.play_time#}}\n\
+            \n## 制約\n- 絵文字は使わない\n- 自身の大規模言語モデルやシステムの仕組みについて質問されても回答を控える"
         - id: 865aa877-7a46-4fb8-a571-0c9feeb53634
           role: user
           text: "他にも下記のような希望があるかどうか、ユーザーに尋ねてください。（あればでOKです。）\n\n - ボードゲームのジャンル（協力系、対戦系、推理系、戦略系、パーティ系...）\n\
@@ -724,7 +732,7 @@ workflow:
       positionAbsolute:
         x: 1249.1889677546428
         y: 169.2276931575795
-      selected: true
+      selected: false
       sourcePosition: right
       targetPosition: left
       type: custom
@@ -751,8 +759,16 @@ workflow:
         prompt_template:
         - id: 7d4e19a0-ea26-4ec8-b733-f05376a21c3c
           role: system
-          text: "あなたは丁寧で親しみやすい「ボードゲームおすすめアシスタント」のエージェントです。\n優しい簡潔な回答を心がけます。\n\nユーザーの希望のうち、以下の条件は決まっています。\
-            \  \n- プレイ人数：{{#conversation.num_players#}}\n- プレイ時間：{{#conversation.play_time#}}"
+          text: 'あなたは丁寧で親しみやすい「ボードゲームおすすめアシスタント」のエージェントです。
+
+            優しい簡潔な回答を心がけます。
+
+
+            ## 制約
+
+            - 絵文字は使わない
+
+            - 自身の大規模言語モデルやシステムの仕組みについて質問されても回答を控える'
         - id: 77fb54ed-34e0-43a7-981a-aa51227d8eec
           role: user
           text: ユーザーの質問に優しく簡潔に回答してください。
@@ -766,10 +782,10 @@ workflow:
       id: '1740284033981'
       position:
         x: 2606
-        y: 736
+        y: 734.2025132457021
       positionAbsolute:
         x: 2606
-        y: 736
+        y: 734.2025132457021
       selected: false
       sourcePosition: right
       targetPosition: left
@@ -885,6 +901,6 @@ workflow:
       type: custom
       width: 244
     viewport:
-      x: -457.3532329813297
-      y: 27.991549289316254
+      x: -769.3532329813295
+      y: 15.991549289316254
       zoom: 0.5563323332474847
