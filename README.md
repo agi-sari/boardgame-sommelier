@@ -14,6 +14,7 @@ https://boardgame-sommelier.com
 - レスポンシブデザイン
 - メッセージ制限機能（5回まで）
 - ストリーミングレスポンス
+- YouTube動画の埋め込み表示
 
 ## 技術スタック
 
@@ -70,7 +71,7 @@ https://boardgame-sommelier.com
 
 ## デプロイ方法
 
-### Google Cloud Runへのデプロイ
+### 事前準備
 
 1. Google Cloud SDKのインストールと設定：
    ```bash
@@ -96,10 +97,94 @@ https://boardgame-sommelier.com
    open -a Docker
    ```
 
-4. デプロイスクリプトの実行：
+### ビルドとデプロイ
+
+#### M1/M2 Mac（Apple Silicon）での注意点
+M1/M2 Macでは、デフォルトでARM64アーキテクチャのイメージがビルドされますが、Cloud Runは現在AMD64アーキテクチャのみをサポートしています。以下の手順で正しくビルドとデプロイを行います：
+
+1. Docker BuildxのセットアップとAMD64用ビルド：
    ```bash
-   chmod +x deploy.sh
-   ./deploy.sh
+   # Buildxビルダーの作成
+   docker buildx create --use
+
+   # AMD64アーキテクチャ用のイメージをビルドしてプッシュ
+   docker buildx build --platform linux/amd64 -t gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME} . --push
+   ```
+
+2. Cloud Runへのデプロイ：
+   ```bash
+   gcloud run deploy ${SERVICE_NAME} \
+     --image gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME} \
+     --platform managed \
+     --region ${GCP_REGION} \
+     --project ${GCP_PROJECT_ID} \
+     --allow-unauthenticated \
+     --set-env-vars="DIFY_API_KEY=${DIFY_API_KEY},DIFY_API_BASE_URL=${DIFY_API_BASE_URL}"
+   ```
+
+#### Intel Macまたはその他のAMD64システムでの手順
+通常のDockerビルドとデプロイが可能です：
+
+```bash
+# イメージのビルド
+docker build -t gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME} .
+
+# イメージのプッシュ
+docker push gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME}
+
+# Cloud Runへのデプロイ
+gcloud run deploy ${SERVICE_NAME} \
+  --image gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME} \
+  --platform managed \
+  --region ${GCP_REGION} \
+  --project ${GCP_PROJECT_ID} \
+  --allow-unauthenticated \
+  --set-env-vars="DIFY_API_KEY=${DIFY_API_KEY},DIFY_API_BASE_URL=${DIFY_API_BASE_URL}"
+```
+
+### デプロイの確認
+デプロイが完了すると、以下のようなURLが表示されます：
+```
+Service URL: https://${SERVICE_NAME}-xxxxx-xx.${REGION}.run.app
+```
+
+### トラブルシューティング
+
+#### ビルド関連
+1. **アーキテクチャの問題**
+   エラーメッセージ：
+   ```
+   ERROR: Cloud Run does not support image: Container manifest type must support amd64/linux
+   ```
+   解決策：上記のM1/M2 Mac用の手順を使用してAMD64アーキテクチャ用にビルドしてください。
+
+2. **イメージのプッシュ失敗**
+   ```bash
+   # 認証の再実行
+   gcloud auth configure-docker
+   
+   # キャッシュのクリア
+   docker builder prune
+   ```
+
+3. **ビルドキャッシュの問題**
+   ```bash
+   # ビルドキャッシュのクリア
+   docker buildx prune
+   ```
+
+#### デプロイ関連
+1. **環境変数の問題**
+   - Cloud Run管理画面で環境変数が正しく設定されているか確認
+   - 必要に応じて手動で環境変数を更新
+
+2. **リソースの制限**
+   - メモリ制限に達する場合は、Cloud Run管理画面でリソース設定を調整
+
+3. **ログの確認**
+   ```bash
+   # Cloud Runのログを確認
+   gcloud run services logs read ${SERVICE_NAME}
    ```
 
 ### 独自ドメインの設定（お名前.com使用）
@@ -139,9 +224,8 @@ https://boardgame-sommelier.com
 4. お名前.comでのDNSレコード設定：
    - お名前.comの管理画面にログイン
    - 「DNSレコード設定」を選択
-   - A、AAAA等のレコードを設定
-      - 設定後、反映に数分かかります
-
+   - レコードを設定する
+     - Aレコード、AAAAレコードの追加
 5. DNSとSSL証明書の設定確認：
    ```bash
    # DNSの伝播確認
